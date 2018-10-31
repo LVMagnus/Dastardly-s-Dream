@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module gameloopmanager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>gameloopmanager</strong></big></big> ($Jan 22, 2010 6:04:50 AM$)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///C:/python31/gameloopmanager.py">c:\python31\gameloopmanager.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;defines&nbsp;the&nbsp;<a href="#GameLoopManager">GameLoopManager</a>.&nbsp;Do&nbsp;not&nbsp;instantiate&nbsp;directly&nbsp;(inherit&nbsp;and&nbsp;customize&nbsp;your&nbsp;class,&nbsp;then&nbsp;instantiate&nbsp;it).</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="gameloopmanager.html#GameLoopManager">GameLoopManager</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GameLoopManager">class <strong>GameLoopManager</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>The&nbsp;main&nbsp;objective&nbsp;of&nbsp;this&nbsp;class&nbsp;is&nbsp;to&nbsp;manage&nbsp;the&nbsp;main&nbsp;game&nbsp;flow.&nbsp;It&nbsp;provides&nbsp;methods<br>
+for&nbsp;automatic&nbsp;updates&nbsp;and&nbsp;drawing.&nbsp;Should&nbsp;not&nbsp;be&nbsp;instantiated&nbsp;directly.&nbsp;Rather,&nbsp;derive<br>
+your&nbsp;own&nbsp;class&nbsp;from&nbsp;it,&nbsp;override&nbsp;its&nbsp;Update&nbsp;and&nbsp;Draw&nbsp;methods,&nbsp;customize&nbsp;any&nbsp;properties<br>
+that&nbsp;you&nbsp;wish&nbsp;on&nbsp;its&nbsp;constructor&nbsp;(do&nbsp;not&nbsp;forget&nbsp;to&nbsp;call&nbsp;this&nbsp;class'&nbsp;__init__&nbsp;method),<br>
+instantiate&nbsp;your&nbsp;class&nbsp;and&nbsp;call&nbsp;the&nbsp;instance's&nbsp;<a href="#GameLoopManager-Run">Run</a>()&nbsp;method.<br>
+&nbsp;<br>
+Attributes:<br>
+targetFPS&nbsp;-&gt;&gt;&nbsp;value&nbsp;must&nbsp;be&nbsp;greater&nbsp;than&nbsp;0,&nbsp;and&nbsp;indicates&nbsp;the&nbsp;desired&nbsp;Frames&nbsp;Per&nbsp;Second<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;the&nbsp;game&nbsp;will&nbsp;achieve.&nbsp;The&nbsp;game&nbsp;won't&nbsp;run&nbsp;faster&nbsp;than&nbsp;this&nbsp;value,&nbsp;but&nbsp;is&nbsp;not<br>
+&nbsp;&nbsp;&nbsp;&nbsp;guaranteed&nbsp;how&nbsp;slower&nbsp;it&nbsp;will&nbsp;be&nbsp;(depends&nbsp;on&nbsp;how&nbsp;much&nbsp;time&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;and&nbsp;<a href="#GameLoopManager-Update">Update</a>()&nbsp;are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;taking&nbsp;to&nbsp;be&nbsp;processed).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;value:&nbsp;30.<br>
+&nbsp;<br>
+frameSlowDownTolerance&nbsp;-&gt;&gt;&nbsp;express,&nbsp;in&nbsp;percents,&nbsp;a&nbsp;tolerance&nbsp;value&nbsp;for&nbsp;the&nbsp;time&nbsp;consumed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;by&nbsp;the&nbsp;<a href="#GameLoopManager-Update">Update</a>()&nbsp;method&nbsp;before&nbsp;it&nbsp;is&nbsp;considered&nbsp;to&nbsp;have&nbsp;taken&nbsp;to&nbsp;long&nbsp;and&nbsp;skip&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;call.&nbsp;For&nbsp;example,&nbsp;for&nbsp;the&nbsp;default&nbsp;FPS&nbsp;each&nbsp;frame&nbsp;takes&nbsp;about&nbsp;16.7&nbsp;ms&nbsp;or&nbsp;less<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;process&nbsp;on&nbsp;an&nbsp;ideal&nbsp;situation.&nbsp;If&nbsp;this&nbsp;value&nbsp;is&nbsp;1.1&nbsp;(the&nbsp;default,&nbsp;which&nbsp;means<br>
+&nbsp;&nbsp;&nbsp;&nbsp;110%)&nbsp;then&nbsp;if&nbsp;it&nbsp;takes&nbsp;up&nbsp;to&nbsp;18.37&nbsp;(16.7&nbsp;*&nbsp;110%)&nbsp;the&nbsp;<a href="#GameLoopManager">GameLoopManager</a>&nbsp;will&nbsp;consider<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;it&nbsp;is&nbsp;running&nbsp;on&nbsp;an&nbsp;accetable&nbsp;time&nbsp;and&nbsp;shouldn't&nbsp;be&nbsp;skipping&nbsp;a&nbsp;call&nbsp;toDraw().<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;value:&nbsp;1.1.<br>
+&nbsp;<br>
+drawSkipLimit&nbsp;-&gt;&gt;&nbsp;also&nbsp;in&nbsp;percents,&nbsp;but&nbsp;the&nbsp;value&nbsp;should&nbsp;be&nbsp;such&nbsp;that&nbsp;0&nbsp;&lt;=&nbsp;value&nbsp;&lt;=&nbsp;1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;true.&nbsp;It&nbsp;determines&nbsp;how&nbsp;many&nbsp;calls&nbsp;to&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;can&nbsp;be&nbsp;skipped&nbsp;due&nbsp;to&nbsp;a&nbsp;slow<br>
+&nbsp;&nbsp;&nbsp;&nbsp;running&nbsp;game&nbsp;before&nbsp;enforcing&nbsp;an&nbsp;obrigatory&nbsp;call.&nbsp;For&nbsp;example,&nbsp;for&nbsp;the&nbsp;default&nbsp;FPS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;60&nbsp;and&nbsp;the&nbsp;default&nbsp;drawSkipLimit&nbsp;of&nbsp;0.1&nbsp;it&nbsp;would&nbsp;skip&nbsp;up&nbsp;to&nbsp;6&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;calls&nbsp;in&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;row,&nbsp;but&nbsp;the&nbsp;seventh&nbsp;time&nbsp;it&nbsp;attempted&nbsp;to&nbsp;skip&nbsp;would&nbsp;enforce&nbsp;a&nbsp;compulsory&nbsp;call,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;then&nbsp;the&nbsp;cycle&nbsp;would&nbsp;restart.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;value:&nbsp;0.1.<br>
+&nbsp;<br>
+perecentageConsideredSlow&nbsp;-&gt;&gt;&nbsp;another&nbsp;perecentage.&nbsp;The&nbsp;values&nbsp;are&nbsp;recommended&nbsp;to&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;greater&nbsp;than&nbsp;0.5&nbsp;and&nbsp;smaller&nbsp;or&nbsp;equal&nbsp;to&nbsp;1.&nbsp;The&nbsp;<a href="#GameLoopManager">GameLoopManager</a>&nbsp;uses&nbsp;this&nbsp;value&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;determine&nbsp;if&nbsp;the&nbsp;game&nbsp;is&nbsp;running&nbsp;slow&nbsp;and&nbsp;set&nbsp;the&nbsp;isSlow&nbsp;property&nbsp;(see&nbsp;bellow).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;the&nbsp;game&nbsp;has&nbsp;completed&nbsp;a&nbsp;number&nbsp;of&nbsp;calls&nbsp;to&nbsp;<a href="#GameLoopManager-Update">Update</a>()&nbsp;equal&nbsp;to&nbsp;its&nbsp;targetFPS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;it&nbsp;will&nbsp;compare&nbsp;with&nbsp;the&nbsp;number&nbsp;of&nbsp;calls&nbsp;to&nbsp;Draw.&nbsp;If&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;was&nbsp;called&nbsp;a&nbsp;number&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;times&nbsp;greater&nbsp;or&nbsp;equal&nbsp;to&nbsp;targetFPS&nbsp;*&nbsp;percentageConsideredSlow&nbsp;it&nbsp;will&nbsp;consider<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;the&nbsp;speed&nbsp;is&nbsp;okay&nbsp;and&nbsp;set&nbsp;isSlow&nbsp;to&nbsp;False,&nbsp;but&nbsp;true&nbsp;if&nbsp;it&nbsp;is&nbsp;smaller&nbsp;than<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that.&nbsp;Therefore,&nbsp;0&nbsp;or&nbsp;less&nbsp;means&nbsp;that&nbsp;it&nbsp;will&nbsp;never&nbsp;consider&nbsp;the&nbsp;game&nbsp;slow,&nbsp;and&nbsp;1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;consider&nbsp;it&nbsp;slow&nbsp;if&nbsp;the&nbsp;<a href="#GameLoopManager-Draw">Draw</a>()&nbsp;calls&nbsp;are&nbsp;not&nbsp;on&nbsp;par&nbsp;with&nbsp;the&nbsp;calls&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#GameLoopManager-Update">Update</a>(),&nbsp;and&nbsp;anything&nbsp;greater&nbsp;means&nbsp;it&nbsp;is&nbsp;always&nbsp;considered&nbsp;slow.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;value:&nbsp;0.8.<br>
+&nbsp;<br>
+isSlow&nbsp;-&gt;&gt;&nbsp;Should&nbsp;be&nbsp;used&nbsp;as&nbsp;read&nbsp;only&nbsp;(the&nbsp;class&nbsp;does&nbsp;not&nbsp;use&nbsp;it&nbsp;on&nbsp;its&nbsp;internal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;routines,&nbsp;it&nbsp;is&nbsp;only&nbsp;informative).&nbsp;It&nbsp;points&nbsp;if&nbsp;the&nbsp;game&nbsp;is&nbsp;been&nbsp;considered&nbsp;to&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;running&nbsp;slow&nbsp;or&nbsp;not.&nbsp;See&nbsp;the&nbsp;above&nbsp;property&nbsp;to&nbsp;understand&nbsp;how&nbsp;the&nbsp;game&nbsp;calculates<br>
+&nbsp;&nbsp;&nbsp;&nbsp;it.&nbsp;By&nbsp;consulting&nbsp;this&nbsp;property&nbsp;you&nbsp;can&nbsp;use&nbsp;it&nbsp;to&nbsp;enforce&nbsp;optmization&nbsp;routines.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;value:&nbsp;False.<br>
+&nbsp;<br>
+&nbsp;<br>
+Notice&nbsp;that&nbsp;due&nbsp;to&nbsp;performance&nbsp;optmization&nbsp;there&nbsp;is&nbsp;no&nbsp;routine&nbsp;to&nbsp;enforce&nbsp;valid&nbsp;values.<br>
+Those&nbsp;attributes&nbsp;are&nbsp;not&nbsp;meant&nbsp;to&nbsp;be&nbsp;altered&nbsp;often&nbsp;(usually&nbsp;only&nbsp;at&nbsp;your&nbsp;own&nbsp;class<br>
+initialization,&nbsp;if&nbsp;altered&nbsp;at&nbsp;all),&nbsp;so&nbsp;there&nbsp;the&nbsp;required&nbsp;attention&nbsp;to&nbsp;them&nbsp;will&nbsp;hardly<br>
+impact&nbsp;development&nbsp;time.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="GameLoopManager-Draw"><strong>Draw</strong></a>(self, updateTimeDifference)</dt><dd><tt>Draws&nbsp;the&nbsp;game.&nbsp;If&nbsp;the&nbsp;game&nbsp;is&nbsp;having&nbsp;problems&nbsp;reaching&nbsp;the&nbsp;targetFPS&nbsp;it&nbsp;will<br>
+skip&nbsp;some&nbsp;calls&nbsp;to&nbsp;this&nbsp;method&nbsp;to&nbsp;atempt&nbsp;to&nbsp;keep&nbsp;at&nbsp;least&nbsp;the&nbsp;desired&nbsp;update&nbsp;rate.<br>
+All&nbsp;the&nbsp;inner&nbsp;game&nbsp;logic&nbsp;should&nbsp;be&nbsp;present&nbsp;at&nbsp;the&nbsp;Update&nbsp;method,&nbsp;use&nbsp;this&nbsp;exclusively<br>
+to&nbsp;draw&nbsp;whenever&nbsp;possible.<br>
+updateTimeDifference&nbsp;=&nbsp;time&nbsp;between&nbsp;the&nbsp;two&nbsp;last&nbsp;calls&nbsp;of&nbsp;the&nbsp;Update&nbsp;method.</tt></dd></dl>
+
+<dl><dt><a name="GameLoopManager-Exit"><strong>Exit</strong></a>(self)</dt><dd><tt>Executes&nbsp;the&nbsp;<a href="#GameLoopManager-OnExit">OnExit</a>()&nbsp;function&nbsp;and&nbsp;quits&nbsp;if&nbsp;that&nbsp;function&nbsp;returns&nbsp;True&nbsp;as&nbsp;it&nbsp;first&nbsp;return&nbsp;value,&nbsp;but&nbsp;does&nbsp;nothing&nbsp;if&nbsp;it<br>
+returns&nbsp;False.</tt></dd></dl>
+
+<dl><dt><a name="GameLoopManager-OnExit"><strong>OnExit</strong></a>(self)</dt><dd><tt>Override&nbsp;this&nbsp;methond&nbsp;and&nbsp;implement&nbsp;here&nbsp;any&nbsp;logic&nbsp;you&nbsp;may&nbsp;wish&nbsp;to&nbsp;run&nbsp;just&nbsp;before&nbsp;leaving&nbsp;the&nbsp;game&nbsp;(such&nbsp;as&nbsp;saving&nbsp;a&nbsp;file).<br>
+Your&nbsp;logic&nbsp;must&nbsp;return&nbsp;two&nbsp;values.&nbsp;The&nbsp;first&nbsp;must&nbsp;be&nbsp;either&nbsp;True&nbsp;or&nbsp;False&nbsp;that&nbsp;will&nbsp;control&nbsp;if&nbsp;the&nbsp;application<br>
+will&nbsp;indeed&nbsp;quite&nbsp;(True)&nbsp;or&nbsp;not&nbsp;(False).&nbsp;The&nbsp;second&nbsp;should&nbsp;be&nbsp;0&nbsp;or&nbsp;an&nbsp;error&nbsp;message/code&nbsp;that&nbsp;will&nbsp;be&nbsp;used&nbsp;when<br>
+calling&nbsp;sys.exit().&nbsp;Observe&nbsp;that&nbsp;this&nbsp;will&nbsp;only&nbsp;be&nbsp;called&nbsp;if&nbsp;you&nbsp;call&nbsp;the&nbsp;instance&nbsp;method&nbsp;<a href="#GameLoopManager-Exit">Exit</a>().</tt></dd></dl>
+
+<dl><dt><a name="GameLoopManager-Run"><strong>Run</strong></a>(self)</dt><dd><tt>Call&nbsp;it&nbsp;once&nbsp;from&nbsp;your&nbsp;instance&nbsp;to&nbsp;run&nbsp;your&nbsp;game.&nbsp;Do&nbsp;not&nbsp;override.</tt></dd></dl>
+
+<dl><dt><a name="GameLoopManager-Update"><strong>Update</strong></a>(self, updateTimeDifference)</dt><dd><tt>Updates&nbsp;the&nbsp;game.<br>
+updateTimeDifference&nbsp;=&nbsp;time&nbsp;between&nbsp;the&nbsp;current&nbsp;and&nbsp;the&nbsp;previous&nbsp;call&nbsp;to&nbsp;this<br>
+method,&nbsp;in&nbsp;milliseconds.</tt></dd></dl>
+
+<dl><dt><a name="GameLoopManager-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__author__</strong> = 'Luiz de Mello'<br>
+<strong>__date__</strong> = '$Jan 22, 2010 6:04:50 AM$'</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#7799ee">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Author</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#7799ee"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Luiz&nbsp;de&nbsp;Mello</td></tr></table>
+</body></html>
